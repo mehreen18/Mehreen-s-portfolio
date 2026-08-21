@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mehreen — AI | ML Developer</title>
+<meta name="description" content="Mehreen — AI/ML Developer building end-to-end intelligent systems: from deep learning models to full-stack GeoAI products.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================
+   DESIGN TOKENS
+   Editorial-tech: near-black canvas, warm off-white text,
+   a single confident accent (signal orange), serif display
+   type for presence + mono type for data/tags.
+   ===================================================== */
+:root{
+  --bg: #0A0A12;
+  --surface: #14141F;
+  --surface-2: #1C1C2C;
+  --border: #2B2B3F;
+  --border-light: rgba(255,255,255,.06);
+  --text: #F6F5F2;
+  --text-dim: #A19FB0;
+  --text-faint: #625F73;
+
+  --accent: #FFB648;
+  --accent-soft: rgba(255,182,72,.14);
+  --accent-2: #8B7CF6;
+  --accent-2-soft: rgba(139,124,246,.14);
+  --mint: #5EEAD4;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --container: 1120px;
+
+  /* layered "raised card" shadow system */
+  --shadow-card: 0 1px 0 var(--border-light) inset, 0 1px 2px rgba(0,0,0,.5), 0 18px 40px -16px rgba(0,0,0,.6);
+  --shadow-card-hover: 0 1px 0 var(--border-light) inset, 0 4px 10px rgba(0,0,0,.5), 0 28px 60px -18px rgba(0,0,0,.7), 0 0 0 1px rgba(255,182,72,.15);
+  --shadow-btn: 0 1px 0 rgba(255,255,255,.15) inset, 0 8px 20px -6px rgba(255,182,72,.35);
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139,124,246,.10), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(255,182,72,.08), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x:hidden;
+  cursor: default;
+}
+::selection{ background: var(--accent); color:#0A0A12; }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+.container{ max-width: var(--container); margin:0 auto; padding: 0 28px; }
+
+/* grain texture overlay for depth */
+.grain{
+  position:fixed; inset:0; pointer-events:none; z-index:2; opacity:.035; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* cursor spotlight */
+.spotlight{
+  position:fixed; width:600px; height:600px; border-radius:50%; pointer-events:none; z-index:1;
+  background: radial-gradient(circle, rgba(255,182,72,.09) 0%, rgba(139,124,246,.06) 45%, transparent 70%);
+  transform: translate(-50%,-50%);
+  transition: opacity .3s;
+  left:50%; top:30%;
+}
+
+/* =====================================================
+   NAV
+   ===================================================== */
+.nav{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 22px 28px;
+  backdrop-filter: blur(10px);
+  background: rgba(11,11,13,.55);
+  border-bottom:1px solid transparent;
+  transition: border-color .3s, background .3s;
+}
+.nav.scrolled{ border-bottom-color: var(--border); background: rgba(10,10,18,.85); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.nav-mark{
+  font-family: var(--font-display); font-weight:600; font-size:20px;
+  display:flex; align-items:center; gap:10px;
+}
+.nav-mark .dot{ width:8px; height:8px; border-radius:50%; background: var(--accent); }
+.nav-links{ display:flex; gap:34px; font-family: var(--font-mono); font-size:12.5px; letter-spacing:.03em; }
+.nav-links a{ color: var(--text-dim); position:relative; padding-bottom:3px; transition:color .2s; }
+.nav-links a:hover{ color: var(--text); }
+.nav-links a::after{
+  content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background: var(--accent);
+  transition: width .25s;
+}
+.nav-links a:hover::after{ width:100%; }
+.nav-cta{
+  font-family: var(--font-mono); font-size:12px; border:1px solid var(--border); border-radius:999px;
+  padding:9px 18px; transition: all .25s; background: var(--surface); box-shadow: var(--shadow-card);
+}
+.nav-cta:hover{ border-color: var(--accent); color: var(--accent); box-shadow: 0 8px 20px -6px rgba(255,182,72,.4); }
+.nav-toggle{ display:none; }
+
+/* =====================================================
+   HERO
+   ===================================================== */
+.hero{
+  min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  position:relative; padding: 140px 0 80px;
+}
+.hero-bg-grid{
+  position:absolute; inset:0; z-index:0; opacity:.5;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 60% 50% at 50% 30%, black 40%, transparent 100%);
+}
+.eyebrow{
+  font-family: var(--font-mono); font-size:12.5px; letter-spacing:.08em; color: var(--accent);
+  display:flex; align-items:center; gap:10px; margin-bottom:26px; opacity:0; animation: fadeUp .8s .1s forwards;
+}
+.eyebrow::before{ content:""; width:26px; height:1px; background: var(--accent); }
+.hero h1{
+  font-family: var(--font-display); font-weight:500; line-height:1.02;
+  font-size: clamp(52px, 8vw, 108px); letter-spacing:-.02em;
+  opacity:0; animation: fadeUp .9s .2s forwards;
+}
+.hero h1 em{ font-style:italic; color: var(--accent); font-weight:400; }
+.hero-title{
+  font-family: var(--font-mono); font-size: clamp(14px,2vw,17px); color: var(--text-dim);
+  margin: 22px 0 30px; letter-spacing:.02em;
+  opacity:0; animation: fadeUp .9s .35s forwards;
+}
+.hero-title .sep{ color: var(--accent); margin:0 8px; }
+.hero-bio{
+  max-width:600px; font-size:17px; line-height:1.7; color: var(--text-dim);
+  opacity:0; animation: fadeUp .9s .5s forwards;
+}
+.hero-actions{
+  display:flex; gap:16px; margin-top:38px; flex-wrap:wrap;
+  opacity:0; animation: fadeUp .9s .65s forwards;
+}
+@keyframes fadeUp{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:translateY(0); } }
+
+.btn{
+  font-family: var(--font-mono); font-size:13px; padding:14px 26px; border-radius:999px;
+  display:inline-flex; align-items:center; gap:8px; transition: transform .2s, box-shadow .25s;
+}
+.btn-solid{ background: linear-gradient(180deg, #FFC876, var(--accent)); color:#1A1206; font-weight:600; box-shadow: var(--shadow-btn); }
+.btn-solid:hover{ box-shadow: 0 1px 0 rgba(255,255,255,.2) inset, 0 14px 30px -6px rgba(255,182,72,.5); }
+.btn-outline{ border:1px solid var(--border); color: var(--text); background: var(--surface); box-shadow: var(--shadow-card); }
+.btn-outline:hover{ border-color: var(--accent-2); box-shadow: var(--shadow-card-hover); }
+.btn:hover{ transform: translateY(-3px); }
+
+.hero-scroll{
+  position:absolute; bottom:40px; left:28px; font-family: var(--font-mono); font-size:11px;
+  color: var(--text-faint); display:flex; align-items:center; gap:10px;
+}
+.hero-scroll .line{ width:1px; height:34px; background: linear-gradient(var(--accent), transparent); animation: scrollLine 2s ease-in-out infinite; }
+@keyframes scrollLine{ 0%{ transform: scaleY(0); transform-origin:top; } 50%{ transform: scaleY(1); transform-origin:top; } 51%{ transform-origin:bottom; } 100%{ transform: scaleY(0); transform-origin:bottom; } }
+
+/* =====================================================
+   MARQUEE
+   ===================================================== */
+.marquee-wrap{
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  overflow:hidden; padding: 20px 0; background: var(--surface);
+}
+.marquee{ display:flex; width:max-content; animation: marquee 32s linear infinite; }
+.marquee span{
+  font-family: var(--font-mono); font-size:14px; color: var(--text-faint);
+  padding:0 30px; white-space:nowrap; display:flex; align-items:center; gap:30px;
+}
+.marquee span b{ color: var(--text-dim); font-weight:500; }
+.marquee span::after{ content:"◆"; color: var(--accent); font-size:9px; margin-left:30px; }
+@keyframes marquee{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+
+/* =====================================================
+   REVEAL UTILITY
+   ===================================================== */
+.reveal{ opacity:0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in{ opacity:1; transform: translateY(0); }
+
+/* =====================================================
+   SECTION HEADERS
+   ===================================================== */
+section{ padding: 120px 0; position:relative; }
+.section-tag{
+  font-family: var(--font-mono); font-size:12px; color: var(--accent); letter-spacing:.08em;
+  display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+.section-tag::before{ content:""; width:20px; height:1px; background: var(--accent); }
+.section-title{
+  font-family: var(--font-display); font-size: clamp(32px,4vw,52px); font-weight:500; letter-spacing:-.01em;
+  max-width:640px;
+}
+
+/* =====================================================
+   ABOUT / STATS
+   ===================================================== */
+.about-grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap:60px; margin-top:56px; align-items:start; }
+.about-copy p{ font-size:16.5px; line-height:1.85; color: var(--text-dim); margin-bottom:18px; }
+.about-copy strong{ color: var(--text); font-weight:600; }
+
+.stats{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.stat{
+  background: linear-gradient(160deg, var(--surface-2), var(--surface));
+  padding:26px; border-radius:14px; border:1px solid var(--border);
+  box-shadow: var(--shadow-card); transition: transform .3s, box-shadow .3s;
+}
+.stat:hover{ transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+.stat .num{ font-family: var(--font-display); font-size:38px; color: var(--accent); text-shadow: 0 0 24px rgba(255,182,72,.35); }
+.stat .num small{ font-size:20px; color: var(--text-dim); text-shadow:none; }
+.stat .label{ font-family: var(--font-mono); font-size:11px; color: var(--text-faint); margin-top:8px; letter-spacing:.03em; }
+
+@media (max-width: 860px){ .about-grid{ grid-template-columns:1fr; } }
+
+/* =====================================================
+   SKILLS
+   ===================================================== */
+.skills-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; margin-top:56px; }
+.skill-card{
+  background: linear-gradient(160deg, var(--surface-2), var(--surface));
+  border:1px solid var(--border); border-radius:16px; padding:30px 28px;
+  box-shadow: var(--shadow-card); transition: transform .3s, box-shadow .3s;
+}
+.skill-card:hover{ transform: translateY(-5px); box-shadow: var(--shadow-card-hover); }
+.skill-card h3{ font-family: var(--font-mono); font-size:12px; color: var(--accent); letter-spacing:.06em; margin-bottom:16px; }
+.skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+.skill-tags span{
+  font-family: var(--font-mono); font-size:12.5px; color: var(--text-dim);
+  background: var(--bg); border:1px solid var(--border); padding:6px 12px; border-radius:999px;
+  box-shadow: 0 1px 0 var(--border-light) inset, 0 3px 8px rgba(0,0,0,.3);
+  transition: border-color .2s, color .2s, transform .2s;
+}
+.skill-tags span:hover{ border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
+@media (max-width: 860px){ .skills-grid{ grid-template-columns:1fr; } }
+
+/* =====================================================
+   EXPERIENCE
+   ===================================================== */
+.timeline{ margin-top:56px; border-left:1px solid var(--border); padding-left:36px; position:relative; }
+.timeline-item{
+  position:relative; padding:28px 30px; margin-bottom:20px;
+  background: linear-gradient(160deg, var(--surface-2), var(--surface));
+  border:1px solid var(--border); border-radius:14px; box-shadow: var(--shadow-card);
+  transition: transform .3s, box-shadow .3s;
+}
+.timeline-item:hover{ transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+.timeline-item:last-child{ margin-bottom:0; }
+.timeline-item::before{
+  content:""; position:absolute; left:-48px; top:32px; width:12px; height:12px; border-radius:50%;
+  background: var(--accent); border:3px solid var(--bg); box-shadow: 0 0 0 1px var(--accent), 0 0 14px rgba(255,182,72,.6);
+}
+.timeline-role{ font-family: var(--font-display); font-size:24px; font-weight:500; }
+.timeline-meta{ font-family: var(--font-mono); font-size:12px; color: var(--accent); margin:8px 0 14px; }
+.timeline-desc{ color: var(--text-dim); font-size:15px; line-height:1.75; max-width:640px; }
+.timeline-desc li{ margin-left:18px; margin-top:6px; }
+
+/* =====================================================
+   PROJECTS
+   ===================================================== */
+.projects-grid{ margin-top:56px; display:flex; flex-direction:column; gap:18px; }
+.project-card{
+  background: linear-gradient(160deg, var(--surface-2), var(--surface));
+  border:1px solid var(--border); border-radius:16px;
+  padding:38px; display:grid; grid-template-columns: 60px 1fr auto; gap:28px; align-items:start;
+  box-shadow: var(--shadow-card); transition: transform .3s, box-shadow .3s; position:relative;
+}
+.project-card:hover{ transform: translateY(-5px); box-shadow: var(--shadow-card-hover); }
+.project-index{ font-family: var(--font-mono); font-size:13px; color: var(--text-faint); padding-top:4px; }
+.project-main h3{ font-family: var(--font-display); font-size:26px; font-weight:500; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.badge{
+  font-family: var(--font-mono); font-size:10px; padding:4px 10px; border-radius:999px; letter-spacing:.04em;
+  background: var(--accent-soft); color: var(--accent); border:1px solid rgba(255,182,72,.35);
+  box-shadow: 0 2px 8px rgba(255,182,72,.15);
+}
+.badge-mint{ background: var(--accent-2-soft); color: var(--accent-2); border-color: rgba(139,124,246,.35); box-shadow: 0 2px 8px rgba(139,124,246,.15); }
+.project-desc{ color: var(--text-dim); font-size:15px; line-height:1.75; margin:12px 0 16px; max-width:640px; }
+.project-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+.project-tags span{ font-family: var(--font-mono); font-size:11px; color: var(--text-faint); background: var(--bg); border:1px solid var(--border); padding:5px 10px; border-radius:6px; box-shadow: 0 2px 6px rgba(0,0,0,.3); }
+.project-links{ display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+.project-links a{ font-family: var(--font-mono); font-size:12.5px; color: var(--text-dim); display:flex; align-items:center; gap:6px; transition: color .2s; white-space:nowrap; }
+.project-links a:hover{ color: var(--accent); }
+
+@media (max-width: 760px){
+  .project-card{ grid-template-columns: 1fr; }
+  .project-links{ align-items:flex-start; flex-direction:row; flex-wrap:wrap; }
+}
+
+/* =====================================================
+   CONTACT
+   ===================================================== */
+.contact{ text-align:center; }
+.contact-title{
+  font-family: var(--font-display); font-size: clamp(40px,6vw,80px); font-weight:500; letter-spacing:-.02em;
+  max-width:800px; margin: 0 auto 30px;
+}
+.contact-title em{ font-style:italic; color: var(--accent); }
+.contact p.lead{ color: var(--text-dim); font-size:17px; max-width:520px; margin:0 auto 40px; }
+.contact-links{ display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+
+footer{
+  border-top:1px solid var(--border); padding: 30px 0; margin-top:60px;
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  font-family: var(--font-mono); font-size:12px; color: var(--text-faint);
+}
+
+/* magnetic hover handled via JS transform */
+.magnetic{ transition: transform .15s ease-out; }
+
+@media (max-width: 700px){
+  .nav-links{ display:none; }
+  .nav-cta{ display:none; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="spotlight" id="spotlight"></div>
+
+<!-- ================= NAV ================= -->
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-mark"><span class="dot"></span> Mehreen</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+  </div>
+  <a href="#contact" class="nav-cta magnetic">Let's talk →</a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="hero-bg-grid"></div>
+  <div class="container">
+    <div class="eyebrow">AVAILABLE FOR FREELANCE WORK</div>
+    <h1>Building <em>intelligent</em><br>systems, end to end.</h1>
+    <div class="hero-title">Mehreen <span class="sep">/</span> AI &nbsp;|&nbsp; ML Developer</div>
+    <p class="hero-bio">
+      I design and ship AI systems that go beyond notebooks — from deep learning
+      models to full-stack products people can actually click through. My recent
+      focus: turning satellite imagery into decision-ready GeoAI dashboards, and I'm
+      always drawn to the point where machine learning meets a real, usable interface.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-solid magnetic">View my work</a>
+      <a href="mailto:mehreenasghar69@gmail.com" class="btn btn-outline magnetic">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="line"></div> SCROLL</div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee-wrap">
+  <div class="marquee" id="marquee">
+    <span><b>Python</b> Machine Learning</span>
+    <span><b>Deep Learning</b> CNNs</span>
+    <span><b>Google Earth Engine</b> GeoAI</span>
+    <span><b>FastAPI</b> Backend Systems</span>
+    <span><b>Computer Vision</b> Transformers</span>
+    <span><b>Data Visualization</b> Dashboards</span>
+    <span><b>Python</b> Machine Learning</span>
+    <span><b>Deep Learning</b> CNNs</span>
+    <span><b>Google Earth Engine</b> GeoAI</span>
+    <span><b>FastAPI</b> Backend Systems</span>
+    <span><b>Computer Vision</b> Transformers</span>
+    <span><b>Data Visualization</b> Dashboards</span>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="container">
+    <div class="section-tag">ABOUT</div>
+    <h2 class="section-title reveal">A little about how I work</h2>
+
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>I'm <strong>Mehreen</strong>, an AI/ML developer currently interning with the
+        <strong>AIRI Team at PITB</strong>, based at Arfa Software Technology Park. My work
+        centers on taking machine learning out of the notebook and into products —
+        systems with real interfaces, real data pipelines, and real users in mind.</p>
+        <p>My most recent build, <strong>Punjab GeoGuardian</strong>, reflects that
+        approach: a satellite-based land-monitoring platform that pairs Google Earth
+        Engine's geospatial analysis with a FastAPI backend and a live interactive
+        dashboard — not just a chart in a notebook, but a tool someone could actually
+        open and use.</p>
+        <p>I care about the full stack of an AI idea: the model, the data it's fed,
+        the API that serves it, and the interface that makes it usable by someone who
+        isn't a data scientist.</p>
+      </div>
+
+      <div class="stats reveal">
+        <div class="stat">
+          <div class="num" id="statArea">0<small>km²</small></div>
+          <div class="label">AREA ANALYZED — GEOGUARDIAN</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statAccuracy">0<small>%</small></div>
+          <div class="label">VALIDATION ACCURACY</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statPoints">0</div>
+          <div class="label">MANUAL VALIDATION POINTS</div>
+        </div>
+        <div class="stat">
+          <div class="num" id="statProjects">0</div>
+          <div class="label">AI / ML PROJECTS SHIPPED</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="container">
+    <div class="section-tag">SKILLS</div>
+    <h2 class="section-title reveal">What I build with</h2>
+
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <h3>LANGUAGES</h3>
+        <div class="skill-tags">
+          <span>Python</span><span>JavaScript</span><span>SQL</span><span>HTML/CSS</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>MACHINE LEARNING & DEEP LEARNING</h3>
+        <div class="skill-tags">
+          <span>Scikit-learn</span><span>TensorFlow / Keras</span><span>CNNs</span>
+          <span>Transformers</span><span>Model Evaluation</span><span>Feature Engineering</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>COMPUTER VISION</h3>
+        <div class="skill-tags">
+          <span>Image Classification</span><span>Convolution Filters</span><span>Object Detection</span><span>OpenCV</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>GEOSPATIAL & DATA</h3>
+        <div class="skill-tags">
+          <span>Google Earth Engine</span><span>NDVI / NDBI Analysis</span><span>Geemap</span>
+          <span>Pandas</span><span>NumPy</span><span>Sentinel-2 Imagery</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>BACKEND & APIs</h3>
+        <div class="skill-tags">
+          <span>FastAPI</span><span>REST APIs</span><span>Python Backend Design</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>TOOLS & PLATFORMS</h3>
+        <div class="skill-tags">
+          <span>Google Colab</span><span>Jupyter</span><span>Git / GitHub</span>
+          <span>Leaflet.js</span><span>Chart.js</span><span>Data Visualization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="container">
+    <div class="section-tag">EXPERIENCE</div>
+    <h2 class="section-title reveal">Where I've worked</h2>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-role">AI Intern — AIRI Team</div>
+        <div class="timeline-meta">PITB · Arfa Software Technology Park &nbsp;·&nbsp; Current</div>
+        <div class="timeline-desc">
+          Working on applied AI/GeoAI projects as part of the PITB AI internship
+          program, including:
+          <ul>
+            <li>Designed and built <strong>Punjab GeoGuardian</strong>, an end-to-end
+            GeoAI system for detecting urban expansion and farmland loss using
+            Sentinel-2 satellite imagery.</li>
+            <li>Implemented NDVI/NDBI-based land classification, multi-year change
+            detection, and area-impact quantification.</li>
+            <li>Shipped the pipeline as a full-stack product: FastAPI backend + Google
+            Earth Engine integration + an interactive live dashboard.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="container">
+    <div class="section-tag">SELECTED WORK</div>
+    <h2 class="section-title reveal">Projects</h2>
+
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-index">01</div>
+        <div class="project-main">
+          <h3>Punjab GeoGuardian <span class="badge">FLAGSHIP</span></h3>
+          <p class="project-desc">
+            A full-stack GeoAI platform that compares Sentinel-2 satellite imagery
+            across two years to detect urban expansion and farmland loss. Computes
+            NDVI/NDBI indices, classifies land cover, runs change detection, and
+            surfaces it all through a live interactive dashboard with maps, charts,
+            and a validation workflow — 254 km² analyzed with 80% validated
+            classification accuracy.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>Google Earth Engine</span><span>FastAPI</span>
+            <span>Leaflet.js</span><span>Chart.js</span><span>Sentinel-2</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/mehreen18/PITB_PROJECT_3" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-index">02</div>
+        <div class="project-main">
+          <h3>CNN Digit Classifier <span class="badge badge-mint">DEEP LEARNING</span></h3>
+          <p class="project-desc">
+            A convolutional neural network trained on the MNIST dataset to recognize
+            handwritten digits — covering the full pipeline from data preprocessing
+            and model architecture to training, evaluation, and accuracy tuning.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>TensorFlow/Keras</span><span>CNN</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/mehreen18" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-index">03</div>
+        <div class="project-main">
+          <h3>Image Convolution Explorer <span class="badge badge-mint">COMPUTER VISION</span></h3>
+          <p class="project-desc">
+            A hands-on implementation of convolution filters — edge detection,
+            blurring, and sharpening — built to visualize exactly how CNNs "see" and
+            process an image, kernel by kernel.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>OpenCV</span><span>NumPy</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/mehreen18" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-index">04</div>
+        <div class="project-main">
+          <h3>Transformer Architecture Study <span class="badge badge-mint">NLP / DEEP LEARNING</span></h3>
+          <p class="project-desc">
+            An applied exploration of transformer model architecture — attention
+            mechanisms and sequence modeling — implemented to understand the building
+            blocks behind modern language and sequence models.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>PyTorch/TensorFlow</span><span>Transformers</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/mehreen18" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-index">05</div>
+        <div class="project-main">
+          <h3>Traffic Object Detection <span class="badge badge-mint">COMPUTER VISION</span></h3>
+          <p class="project-desc">
+            A detection model built to identify vehicles and traffic elements from
+            image/video input, later extended into a small applied traffic-monitoring
+            app.
+          </p>
+          <div class="project-tags">
+            <span>Python</span><span>Object Detection</span><span>OpenCV</span>
+          </div>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/mehreen18" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="container contact">
+    <div class="section-tag" style="justify-content:center;">GET IN TOUCH</div>
+    <h2 class="contact-title reveal">Let's build something<br><em>intelligent</em> together.</h2>
+    <p class="lead reveal">
+      Open to freelance and contract work — AI/ML systems, computer vision,
+      GeoAI, and full-stack AI products.
+    </p>
+    <div class="contact-links reveal">
+      <a href="mailto:mehreenasghar69@gmail.com" class="btn btn-solid magnetic">Email me ↗</a>
+      <a href="https://github.com/mehreen18" target="_blank" class="btn btn-outline magnetic">GitHub ↗</a>
+      <a href="https://www.upwork.com/freelancers/~01a4bf581c8f15201b" target="_blank" class="btn btn-outline magnetic">Upwork ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:14px;">
+    <span>© 2026 Mehreen. Built with intent.</span>
+    <span>mehreenasghar69@gmail.com</span>
+  </div>
+</footer>
+
+<script>
+// ---- Nav background on scroll ----
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ---- Cursor spotlight ----
+const spotlight = document.getElementById('spotlight');
+window.addEventListener('mousemove', (e) => {
+  spotlight.style.left = e.clientX + 'px';
+  spotlight.style.top = e.clientY + 'px';
+});
+
+// ---- Scroll reveal ----
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+// ---- Magnetic buttons ----
+document.querySelectorAll('.magnetic').forEach(el => {
+  el.addEventListener('mousemove', (e) => {
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x * 0.25}px, ${y * 0.4}px)`;
+  });
+  el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0,0)'; });
+});
+
+// ---- Animated counters (triggered on scroll into view) ----
+function animateCounter(id, target, suffix = '', duration = 1400) {
+  const el = document.getElementById(id);
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.floor(eased * target);
+    el.innerHTML = value + (suffix ? `<small>${suffix}</small>` : '');
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const statsSection = document.querySelector('.stats');
+let statsPlayed = false;
+const statsIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !statsPlayed) {
+      statsPlayed = true;
+      animateCounter('statArea', 254, 'km²');
+      animateCounter('statAccuracy', 80, '%');
+      animateCounter('statPoints', 60);
+      animateCounter('statProjects', 6);
+    }
+  });
+}, { threshold: 0.3 });
+if (statsSection) statsIO.observe(statsSection);
+</script>
+
+</body>
+</html>
