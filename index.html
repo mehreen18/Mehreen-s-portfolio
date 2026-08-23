@@ -172,26 +172,53 @@ section{padding:120px 0; position:relative;}
 .section-title{font-family:var(--font-display); font-size:clamp(30px,4vw,50px); font-weight:700; letter-spacing:-.02em; text-transform:uppercase; max-width:680px;}
 
 /* ABOUT + STAIRCASE STATS */
-.about-grid{display:grid; grid-template-columns:.85fr 1.15fr; gap:60px; margin-top:56px; align-items:start;}
+.about-grid{display:grid; grid-template-columns:.62fr .78fr 1.15fr; gap:36px; margin-top:56px; align-items:start;}
 .about-copy p{font-size:16.5px; line-height:1.85; color:var(--text-dim); margin-bottom:18px;}
 .about-copy strong{color:var(--text); font-weight:600;}
+
+/* PORTRAIT CARD */
+.portrait-card{position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--border); box-shadow:var(--shadow-card); background:var(--surface-2); transition:transform .35s, box-shadow .35s;}
+.portrait-card:hover{transform:translateY(-5px); box-shadow:var(--shadow-card-hover);}
+.portrait-card .frame{position:relative; aspect-ratio:3/4; overflow:hidden;}
+.portrait-card img{width:100%; height:100%; object-fit:cover; object-position:center 18%; filter:grayscale(.15) contrast(1.04) saturate(.92); transition:filter .4s, transform .5s;}
+.portrait-card:hover img{filter:grayscale(0) contrast(1.06) saturate(1.02); transform:scale(1.03);}
+.portrait-card .frame::after{content:""; position:absolute; inset:0; background:linear-gradient(200deg, rgba(255,62,82,.16), transparent 42%, transparent 60%, rgba(62,140,255,.18)); mix-blend-mode:overlay; pointer-events:none;}
+.portrait-card .frame::before{content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(6,7,12,.85) 0%, rgba(6,7,12,0) 32%); pointer-events:none; z-index:1;}
+.portrait-corner{position:absolute; width:18px; height:18px; border-color:rgba(245,246,248,.55); z-index:2;}
+.portrait-corner.tl{top:12px; left:12px; border-top:1.5px solid; border-left:1.5px solid;}
+.portrait-corner.tr{top:12px; right:12px; border-top:1.5px solid; border-right:1.5px solid;}
+.portrait-corner.bl{bottom:12px; left:12px; border-bottom:1.5px solid; border-left:1.5px solid;}
+.portrait-corner.br{bottom:12px; right:12px; border-bottom:1.5px solid; border-right:1.5px solid;}
+.portrait-tag{position:absolute; top:14px; left:38px; font-family:var(--font-mono); font-size:9.5px; letter-spacing:.08em; color:rgba(245,246,248,.8); z-index:2;}
+.portrait-caption{position:absolute; left:22px; right:22px; bottom:18px; z-index:2;}
+.portrait-caption .name{font-family:var(--font-display); font-weight:700; font-size:19px; text-transform:uppercase; letter-spacing:-.01em; line-height:1.05;}
+.portrait-caption .role{font-family:var(--font-mono); font-size:10.5px; color:var(--text-dim); margin-top:5px; letter-spacing:.03em;}
+@media (max-width:1100px){
+  .about-grid{grid-template-columns:.9fr 1.1fr;}
+  .portrait-card{grid-column:1/-1; max-width:280px; margin:0 auto 8px;}
+}
+@media (max-width:860px){
+  .about-grid{grid-template-columns:1fr;}
+  .portrait-card{max-width:260px; margin:0 auto;}
+  .stat-brick{width:100% !important; margin-top:14px !important; align-self:stretch !important;}
+}
 
 .stat-stairs{display:flex; flex-direction:column;}
 .stat-brick{
   background:linear-gradient(160deg, var(--surface-2), var(--surface)); border:1px solid var(--border); border-radius:14px;
-  padding:22px 26px; box-shadow:var(--shadow-card); transition:transform .3s, box-shadow .3s; width:78%;
+  padding:20px 22px; box-shadow:var(--shadow-card); transition:transform .3s, box-shadow .3s; width:92%;
 }
 .stat-brick:hover{transform:translateY(-4px); box-shadow:var(--shadow-card-hover);}
 .stat-brick:nth-child(1){align-self:flex-start;}
-.stat-brick:nth-child(2){align-self:center; margin-top:-10px; width:88%;}
-.stat-brick:nth-child(3){align-self:flex-end; margin-top:-10px;}
-.stat-brick:nth-child(4){align-self:center; margin-top:-10px; width:82%;}
+.stat-brick:nth-child(2){align-self:center; margin-top:-8px; width:100%;}
+.stat-brick:nth-child(3){align-self:flex-end; margin-top:-8px; width:92%;}
+.stat-brick:nth-child(4){align-self:center; margin-top:-8px; width:96%;}
 .stat-brick .num{font-family:var(--font-display); font-weight:700; font-size:36px;}
 .stat-brick .num.r{color:var(--red);}
 .stat-brick .num.b{color:var(--blue);}
 .stat-brick .num small{font-size:19px; color:var(--text-dim);}
 .stat-brick .label{font-family:var(--font-mono); font-size:11px; color:var(--text-faint); margin-top:6px; letter-spacing:.03em;}
-@media (max-width:860px){ .about-grid{grid-template-columns:1fr;} .stat-brick{width:100% !important; margin-top:14px !important; align-self:stretch !important;} }
+
 
 /* CORE FOCUS RING — signature element, doubles as her 4 real skill domains */
 .ring-wrap{position:relative; margin:64px auto 0; width:min(560px, 92vw); aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;}
@@ -386,6 +413,21 @@ footer{border-top:1px solid var(--border); padding:30px 0; margin-top:20px; disp
     <h2 class="section-title reveal">A little about how I work</h2>
 
     <div class="about-grid">
+      <div class="portrait-card reveal">
+        <div class="frame">
+          <img src="./assets/mehreen-portrait.jpg" alt="Portrait of Mehreen Asghar">
+          <div class="portrait-corner tl"></div>
+          <div class="portrait-corner tr"></div>
+          <div class="portrait-corner bl"></div>
+          <div class="portrait-corner br"></div>
+          <div class="portrait-tag">PROFILE · 2026</div>
+          <div class="portrait-caption">
+            <div class="name">Mehreen Asghar</div>
+            <div class="role">AI / ML Developer</div>
+          </div>
+        </div>
+      </div>
+
       <div class="stat-stairs reveal">
         <div class="stat-brick">
           <div class="num r" id="statArea">0<small>km²</small></div>
