@@ -82,8 +82,12 @@ img,svg{max-width:100%; display:block;}
 .nav-links a:hover{color:var(--text);}
 .nav-links a::after{content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--red); transition:width .25s;}
 .nav-links a:hover::after{width:100%;}
+.nav-actions{display:flex; align-items:center; gap:12px;}
 .nav-cta{font-family:var(--font-mono); font-size:12px; border:1px solid var(--border); border-radius:999px; padding:9px 18px; transition:all .25s; background:var(--surface); box-shadow:var(--shadow-card);}
 .nav-cta:hover{border-color:var(--blue); color:var(--blue); box-shadow:0 8px 20px -6px rgba(62,140,255,.4);}
+.nav-cv{font-family:var(--font-mono); font-size:12px; border-radius:999px; padding:9px 18px; transition:all .25s; background:linear-gradient(100deg, var(--red), #ff6b7a); color:#1A0609; font-weight:600; box-shadow:0 1px 0 rgba(255,255,255,.15) inset, 0 8px 18px -8px rgba(255,62,82,.5); display:flex; align-items:center; gap:7px;}
+.nav-cv:hover{box-shadow:0 1px 0 rgba(255,255,255,.2) inset, 0 12px 24px -6px rgba(255,62,82,.6); transform:translateY(-1px);}
+.nav-cv svg{width:12px; height:12px;}
 
 /* HERO */
 .hero{min-height:100vh; display:flex; align-items:center; position:relative; padding:150px 0 80px;}
@@ -120,6 +124,7 @@ img,svg{max-width:100%; display:block;}
 .btn-outline{border:1px solid var(--border); color:var(--text); background:var(--surface); box-shadow:var(--shadow-card);}
 .btn-outline:hover{border-color:var(--blue); box-shadow:var(--shadow-card-hover);}
 .btn:hover{transform:translateY(-3px);}
+.btn svg{width:14px; height:14px;}
 
 /* Hero radar visual — abstract satellite scan, not a stock photo */
 .hero-visual{position:relative; aspect-ratio:1/1.05; opacity:0; animation:fadeUp 1s .4s forwards;}
@@ -263,6 +268,24 @@ section{padding:120px 0; position:relative;}
 .project-link:hover{color:var(--red); border-color:var(--red);}
 @media (max-width:820px){ .project-row, .project-row.rev{grid-template-columns:1fr; direction:ltr;} }
 
+/* RESUME */
+.resume-panel{
+  margin-top:56px; display:grid; grid-template-columns:1.1fr .9fr; gap:0; border:1px solid var(--border); border-radius:20px;
+  overflow:hidden; background:linear-gradient(160deg, var(--surface-2), var(--surface)); box-shadow:var(--shadow-card);
+}
+.resume-side{padding:44px 44px; border-right:1px solid var(--border); position:relative;}
+.resume-side::before{content:""; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 0% 0%, rgba(255,62,82,.08), transparent 60%); pointer-events:none;}
+.resume-side h3{font-family:var(--font-display); font-size:26px; text-transform:uppercase; letter-spacing:-.01em; margin-bottom:14px;}
+.resume-side p{color:var(--text-dim); font-size:14.5px; line-height:1.75; max-width:380px; margin-bottom:28px;}
+.resume-meta{display:flex; flex-direction:column; gap:10px; margin-bottom:30px;}
+.resume-meta span{font-family:var(--font-mono); font-size:11.5px; color:var(--text-faint); display:flex; align-items:center; gap:10px;}
+.resume-meta span b{color:var(--text-dim); font-weight:500; min-width:80px; display:inline-block;}
+.resume-preview{padding:36px; display:flex; flex-direction:column; gap:14px; justify-content:center;}
+.resume-row{display:flex; align-items:center; justify-content:space-between; font-family:var(--font-mono); font-size:12px; padding:14px 16px; border:1px solid var(--border); border-radius:10px; background:var(--bg); color:var(--text-dim);}
+.resume-row b{color:var(--text); font-weight:500;}
+.resume-row .dotline{flex:1; margin:0 12px; border-bottom:1px dashed var(--border);}
+@media (max-width:820px){ .resume-panel{grid-template-columns:1fr;} .resume-side{border-right:none; border-bottom:1px solid var(--border);} }
+
 /* CONTACT */
 .contact{text-align:center; position:relative; overflow:hidden;}
 .contact-bg-text{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-family:var(--font-display); font-weight:700; font-size:min(18vw,220px); color:var(--surface-2); white-space:nowrap; letter-spacing:-.02em; z-index:0; pointer-events:none; opacity:.5;}
@@ -289,8 +312,15 @@ footer{border-top:1px solid var(--border); padding:30px 0; margin-top:20px; disp
     <a href="#focus">Focus</a>
     <a href="#experience">Experience</a>
     <a href="#projects">Projects</a>
+    <a href="#resume">Resume</a>
   </div>
-  <a href="#contact" class="nav-cta magnetic">Let's talk →</a>
+  <div class="nav-actions">
+    <a href="./Mehreen_Asghar_CV.pdf" download class="nav-cv magnetic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+      Download CV
+    </a>
+    <a href="#contact" class="nav-cta magnetic">Let's talk →</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -310,7 +340,10 @@ footer{border-top:1px solid var(--border); padding:30px 0; margin-top:20px; disp
         </p>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-solid magnetic">View my work</a>
-          <a href="mailto:mehreenasghar69@gmail.com" class="btn btn-outline magnetic">Get in touch</a>
+          <a href="./Mehreen_Asghar_CV.pdf" download class="btn btn-outline magnetic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+            Download CV
+          </a>
         </div>
       </div>
 
@@ -625,6 +658,41 @@ footer{border-top:1px solid var(--border); padding:30px 0; margin-top:20px; disp
   </div>
 </section>
 
+<!-- RESUME -->
+<section id="resume">
+  <div class="container">
+    <div class="section-tag">CURRICULUM VITAE</div>
+    <h2 class="section-title reveal">The full record</h2>
+
+    <div class="resume-panel reveal">
+      <div class="resume-side">
+        <h3>One PDF, everything that matters.</h3>
+        <p>Education, internship, technical skill set, and shipped projects — laid out for
+        a recruiter, an ATS, or a print-out. Updated alongside this page.</p>
+
+        <div class="resume-meta">
+          <span><b>Format</b> PDF · 1 page</span>
+          <span><b>Focus</b> AI / ML Engineering</span>
+          <span><b>Based in</b> Pakistan</span>
+          <span><b>Status</b> Open to internships &amp; freelance</span>
+        </div>
+
+        <a href="./Mehreen_Asghar_CV.pdf" download class="btn btn-solid magnetic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+          Download CV (PDF)
+        </a>
+      </div>
+      <div class="resume-preview">
+        <div class="resume-row"><span>Experience</span><span class="dotline"></span><b>AI Intern — AIRI Team, PITB</b></div>
+        <div class="resume-row"><span>Education</span><span class="dotline"></span><b>BS Software Engineering</b></div>
+        <div class="resume-row"><span>Core Stack</span><span class="dotline"></span><b>Python · TensorFlow · GEE</b></div>
+        <div class="resume-row"><span>Flagship</span><span class="dotline"></span><b>Punjab GeoGuardian</b></div>
+        <div class="resume-row"><span>Contact</span><span class="dotline"></span><b>mehreenasghar69@gmail.com</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="container contact">
@@ -638,7 +706,10 @@ footer{border-top:1px solid var(--border); padding:30px 0; margin-top:20px; disp
     <div class="contact-links reveal">
       <a href="mailto:mehreenasghar69@gmail.com" class="btn btn-solid magnetic">Email me ↗</a>
       <a href="https://github.com/mehreen18" target="_blank" class="btn btn-outline magnetic">GitHub ↗</a>
-      <a href="https://www.upwork.com/freelancers/~01a4bf581c8f15201b" target="_blank" class="btn btn-outline magnetic">Upwork ↗</a>
+      <a href="./Mehreen_Asghar_CV.pdf" download class="btn btn-outline magnetic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        Download CV
+      </a>
     </div>
   </div>
 </section>
